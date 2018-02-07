@@ -12,10 +12,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.shask.cvgenerator.model.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.CvGeneratorService;
-import com.shask.cvgenerator.service.impl.minimalist.HeaderGenerator;
-import com.shask.cvgenerator.service.impl.minimalist.ShortOverviewGenerator;
-import com.shask.cvgenerator.service.impl.minimalist.UniversityExperienceGenerator;
-import com.shask.cvgenerator.service.impl.minimalist.WorkExperienceGenerator;
+import com.shask.cvgenerator.service.impl.minimalist.*;
 import com.shask.cvgenerator.service.impl.util.RhumbusLineSeparator;
 import com.shask.cvgenerator.util.PDFConstants;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private BlockElementGenerator shortOverviewGenerator = new ShortOverviewGenerator();
     private BlockElementGenerator workExperienceGenerator = new WorkExperienceGenerator();
     private BlockElementGenerator universityExperienceGenerator = new UniversityExperienceGenerator();
+    private BlockElementGenerator languageAndHobbiesGenerator = new LanguageAndHobbiesGenerator();
 
     private static LineSeparator lineSeparator;
 
@@ -73,7 +71,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
 
 
         document.add(new Paragraph("Langues et Loisirs").setTextAlignment(TextAlignment.CENTER).setBold());
-        document.add(universityExperienceGenerator.generateFor(person));
+        document.add(languageAndHobbiesGenerator.generateFor(person));
 
 
 

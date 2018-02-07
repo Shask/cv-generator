@@ -30,7 +30,7 @@ public class HeaderGenerator implements BlockElementGenerator {
         float[] columnWidths = {3, 8, 3};
         Table table = new Table(columnWidths, true).setFontSize(5).setBorder(Border.NO_BORDER);
 
-        Optional<Image> img = loadImage(person.getPictureUrl());
+        Optional<Image> img = ItextPDFHelper.loadImage(person.getPictureUrl(),DEFAULT_PROFIL_PIC);
         Cell imgCell = new Cell(6, 1);
         img.ifPresent(image -> imgCell.add(image.setAutoScale(true)));
         table.addCell(imgCell);
@@ -54,21 +54,5 @@ public class HeaderGenerator implements BlockElementGenerator {
         table.addCell(ItextPDFHelper.newBasicCell(" ", 1, 3));
 
         return table;
-    }
-
-    private Optional<Image> loadImage(String imgUrl) {
-
-
-        try {
-            return Optional.of(new Image(ImageDataFactory.create(imgUrl)));
-        } catch (MalformedURLException e) {
-            log.warning("Couldn't find profil image with the given url");
-            try {
-                return Optional.of(new Image(ImageDataFactory.create(DEFAULT_PROFIL_PIC)));
-            } catch (MalformedURLException e1) {
-                log.severe("Couldn't find profil image in filesystem");
-            }
-        }
-        return Optional.empty();
     }
 }
