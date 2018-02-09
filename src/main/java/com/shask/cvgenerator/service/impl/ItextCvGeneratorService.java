@@ -23,7 +23,6 @@ import java.io.IOException;
 @Service
 public class ItextCvGeneratorService implements CvGeneratorService {
 
-    final String filepath = "./test.pdf";
 
     private static PdfFont fontHelveticaNueue;
     private static PdfFont fontHelvetica;
@@ -45,7 +44,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         lineSeparator = new LineSeparator(new RhumbusLineSeparator());
     }
 
-    public String generate(Person person) throws IOException {
+    public String generate(Person person,String filepath) throws IOException {
         File file = new File(filepath);
         file.getParentFile().mkdirs();
 
@@ -61,16 +60,16 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         document.add(shortOverviewGenerator.generateFor(person));
         addSpacer(document);
 
-        document.add(new Paragraph("Experience").setTextAlignment(TextAlignment.CENTER).setBold());
+        document.add(new Paragraph("Experience").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
         document.add(workExperienceGenerator.generateFor(person));
         addSpacer(document);
 
-        document.add(new Paragraph("Scolarité").setTextAlignment(TextAlignment.CENTER).setBold());
+        document.add(new Paragraph("Scolarité").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
         document.add(universityExperienceGenerator.generateFor(person));
         addSpacer(document);
 
 
-        document.add(new Paragraph("Langues et Loisirs").setTextAlignment(TextAlignment.CENTER).setBold());
+        document.add(new Paragraph("Langues et Loisirs").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
         document.add(languageAndHobbiesGenerator.generateFor(person));
 
 

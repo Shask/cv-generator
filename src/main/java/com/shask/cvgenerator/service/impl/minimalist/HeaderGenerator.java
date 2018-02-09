@@ -10,12 +10,14 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.shask.cvgenerator.model.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.impl.ItextPDFHelper;
+import com.shask.cvgenerator.util.PDFConstants;
 import lombok.extern.java.Log;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.Optional;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
@@ -27,8 +29,10 @@ public class HeaderGenerator implements BlockElementGenerator {
 
     @Override
     public BlockElement generateFor(final Person person) {
+        Objects.requireNonNull(person);
+
         float[] columnWidths = {3, 8, 3};
-        Table table = new Table(columnWidths, true).setFontSize(5).setBorder(Border.NO_BORDER);
+        Table table = new Table(columnWidths, true).setFontSize(PDFConstants.SMALL_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         Optional<Image> img = ItextPDFHelper.loadImage(person.getPictureUrl(),DEFAULT_PROFIL_PIC);
         Cell imgCell = new Cell(6, 1);
@@ -37,13 +41,13 @@ public class HeaderGenerator implements BlockElementGenerator {
 
         table.addCell(ItextPDFHelper.newBasicCell(person.getFirstName() + " " + person.getSurname(), 2, 1)
             .setTextAlignment(TextAlignment.CENTER)
-            .setFontSize(8)
+            .setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE)
             .setBold());
 
         table.addCell(ItextPDFHelper.newBasicCell(person.getDob().until(LocalDate.now(), ChronoUnit.YEARS) + " ans"));
         table.addCell(ItextPDFHelper.newBasicCell(person.getAdress1()));
 
-        table.addCell(ItextPDFHelper.newBasicCell(person.getJobTitle(), 2, 1).setTextAlignment(TextAlignment.CENTER).setFontSize(8).setBold());
+        table.addCell(ItextPDFHelper.newBasicCell(person.getJobTitle(), 2, 1).setTextAlignment(TextAlignment.CENTER).setFontSize(PDFConstants.LARGE_FONT_SIZE).setBold());
         table.addCell(ItextPDFHelper.newBasicCell(person.getAdress2()));
         table.addCell(ItextPDFHelper.newBasicCell(person.getPostCode() + " " + person.getCity()));
 

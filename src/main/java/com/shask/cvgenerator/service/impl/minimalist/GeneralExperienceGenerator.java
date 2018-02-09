@@ -6,6 +6,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
+import com.itextpdf.layout.property.VerticalAlignment;
 import com.shask.cvgenerator.model.Experience;
 import com.shask.cvgenerator.model.Technology;
 import com.shask.cvgenerator.util.PDFConstants;
@@ -16,17 +17,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
 import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA;
+import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA_BOLD;
+import static com.shask.cvgenerator.util.PDFConstants.SMALL_FONT_SIZE;
 
-public class GeneralExperienceGenerator {
+class GeneralExperienceGenerator {
+
+    private final static FrenchPeriodFormatter frenchPeriodFormatter = new FrenchPeriodFormatter();
 
     protected Table experienceListElement(List<Experience> experiences) {
 
+        Objects.requireNonNull(experiences);
+
         float[] columnWidths = {1, 1};
-        Table finalTable = new Table(columnWidths, true).setFontSize(6).setBorder(Border.NO_BORDER);
+        Table finalTable = new Table(columnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         List<Table> degrees = new ArrayList<>();
 
@@ -41,14 +49,22 @@ public class GeneralExperienceGenerator {
     }
 
     private Table experienceElement(Experience exp) {
+        Objects.requireNonNull(exp);
+
         float[] innerColumnWidths = {1, 1, 1, 1, 1, 1, 1, 1};
-        Table t = new Table(innerColumnWidths, true).setFontSize(5);
-        t.addCell(new Cell(1, 2).add(new Paragraph(exp.getDateBegin().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE)) + " - " +
-            exp.getDateEnd().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE))).setBackgroundColor(DeviceRgb.BLACK).setFontColor(DeviceRgb.WHITE))
-            .setBorder(Border.NO_BORDER)
-            .setTextAlignment(TextAlignment.CENTER));
-        t.addCell(newBasicCell(new FrenchPeriodFormatter().format(Period.between(exp.getDateBegin(), exp.getDateEnd())), 1, 2));
-        t.addCell(newBasicCell("", 1, 4));
+        Table t = new Table(innerColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE);
+
+        t.addCell(new Cell(1, 3).add(new Paragraph(exp.getDateBegin().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE)) + " - " +
+            exp.getDateEnd().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE)))
+                .setBackgroundColor(DeviceRgb.BLACK)
+                .setFontSize(SMALL_FONT_SIZE)
+                .setFontColor(DeviceRgb.WHITE))
+                .setBorder(Border.NO_BORDER)
+                .setTextAlignment(TextAlignment.CENTER)
+                .setBold());
+
+        t.addCell(newBasicCell(frenchPeriodFormatter.format(Period.between(exp.getDateBegin(), exp.getDateEnd())), 1, 3));
+        t.addCell(newBasicCell("", 1, 2));
 
         final int padding = 1;
         final int txtSize = innerColumnWidths.length - padding;

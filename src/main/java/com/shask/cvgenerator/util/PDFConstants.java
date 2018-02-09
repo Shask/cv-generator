@@ -11,8 +11,13 @@ import java.io.IOException;
 public class PDFConstants {
     public static final Float DOCUMENT_WIDTH = PageSize.A4.getWidth();
     public static final Float DOCUMENT_HEIGHT = PageSize.A4.getHeight();
-    public static final Float DOCUMENT_MARGIN =  PageSize.A4.getWidth() * 0.01f;
+    public static final Float DOCUMENT_MARGIN =  PageSize.A4.getWidth() * 0.02f;
     public static final String FONT = "./src/main/resources/font/HelveticaNeue.ttf";
+
+    public static Integer LARGE_FONT_SIZE = 20;
+    public static Integer MEDIUM_FONT_SIZE = 10;
+    public static Integer MEDIUM_PLUS_FONT_SIZE = 11;
+    public static Integer SMALL_FONT_SIZE = 8;
 
 
     public static PdfFont FONT_HELVETIVA_NUEUE = null;

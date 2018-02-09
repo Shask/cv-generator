@@ -21,6 +21,7 @@ public class CvGeneratorServiceTest {
 
     private CvGeneratorService cvGeneratorService;
     private Person me;
+    private final String filepath = "./test.pdf";
 
     @Before
     public void before() {
@@ -126,7 +127,7 @@ public class CvGeneratorServiceTest {
             .adress2("Appt - 1585 Bis")
             .dob(LocalDate.of(1992,Month.JUNE,5))
             .email("zeqionoqn@gmail.com")
-            .jobTitle("Developeur AZERTY QWERTY")
+            .jobTitle("Developeur MOUSSE TACHE (et barbe)")
             .firstName("Stephane")
             .surname("Feureong")
             .pictureUrl("http://78.media.tumblr.com/3d7038d69d29fd059404629d616e93b6/tumblr_mqnbjkIKDi1s1pua7o1_500.png")
@@ -143,7 +144,7 @@ public class CvGeneratorServiceTest {
 
     @Test
     public void testCvGeneration() throws IOException {
-        cvGeneratorService.generate(me);
+        cvGeneratorService.generate(me,filepath);
     }
 
     @Autowired
