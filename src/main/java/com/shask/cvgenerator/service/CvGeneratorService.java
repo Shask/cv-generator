@@ -1,9 +1,7 @@
 package com.shask.cvgenerator.service;
 
-import com.shask.cvgenerator.model.Person;
-
 import java.io.IOException;
 
 public interface CvGeneratorService {
-    String generate(Person person,String filepath) throws IOException;
+    String generate(String filepath,String surname) throws IOException;
 }

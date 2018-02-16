@@ -1,6 +1,5 @@
 package com.shask.cvgenerator.service.impl.minimalist;
 
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.BlockElement;
 import com.itextpdf.layout.element.Cell;
@@ -13,14 +12,10 @@ import com.shask.cvgenerator.service.impl.ItextPDFHelper;
 import com.shask.cvgenerator.util.PDFConstants;
 import lombok.extern.java.Log;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 import java.util.Optional;
-
-import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
 
 @Log
 public class HeaderGenerator implements BlockElementGenerator {

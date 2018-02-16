@@ -16,13 +16,13 @@ public class Experience {
     private LocalDate dateBegin;
     private LocalDate dateEnd;
     private Establishment establishment;
-    private List<ExperienceTranslation> experienceTranslation;
+    private List<ExperienceTranslation> experienceTranslations;
     private List<Technology> technologies;
     private String location;
     private String name;
     private ExperienceType type;
 
     public ExperienceTranslation getExperienceTranslation(String local) {
-        return experienceTranslation.stream().filter(e -> local.equals(e.getLanguage())).findFirst().orElseThrow(LanguageNotFoundException::new);
+        return experienceTranslations.stream().filter(e -> local.equals(e.getLanguage())).findFirst().orElseThrow(LanguageNotFoundException::new);
     }
 }

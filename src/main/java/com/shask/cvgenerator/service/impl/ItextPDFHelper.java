@@ -6,14 +6,13 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
-import com.shask.cvgenerator.service.PDFHelper;
 import lombok.extern.java.Log;
 
 import java.net.MalformedURLException;
 import java.util.Optional;
 
 @Log
-public class ItextPDFHelper implements PDFHelper {
+public class ItextPDFHelper {
 
     public static Cell newBasicCell(String content) {
         return new Cell().add(new Paragraph(content)).setBorder(Border.NO_BORDER);
@@ -44,11 +43,10 @@ public class ItextPDFHelper implements PDFHelper {
     }
 
     public static Optional<Image> loadImage(String imgUrl, String fallbackUrl) {
-
         try {
             return Optional.of(new Image(ImageDataFactory.create(imgUrl)));
-        } catch (MalformedURLException e) {
-            log.warning("Couldn't find image with the given url");
+        } catch (MalformedURLException | NullPointerException e) {
+            log.info("Couldn't find image with the given url");
             if (fallbackUrl != null) {
                 try {
                     return Optional.of(new Image(ImageDataFactory.create(fallbackUrl)));

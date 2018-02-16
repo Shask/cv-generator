@@ -12,6 +12,7 @@ import com.shask.cvgenerator.model.Technology;
 import com.shask.cvgenerator.util.PDFConstants;
 import com.shask.cvgenerator.util.impl.FrenchPeriodFormatter;
 
+import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -54,8 +55,16 @@ class GeneralExperienceGenerator {
         float[] innerColumnWidths = {1, 1, 1, 1, 1, 1, 1, 1};
         Table t = new Table(innerColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE);
 
-        t.addCell(new Cell(1, 3).add(new Paragraph(exp.getDateBegin().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE)) + " - " +
-            exp.getDateEnd().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE)))
+        String dateBegin, dateEnd;
+        dateBegin = exp.getDateBegin().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE));
+        if (exp.getDateEnd() != null) {
+            dateEnd = exp.getDateEnd().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE));
+        } else {
+            dateEnd = "Aujourd'hui";
+            exp.setDateEnd(LocalDate.now());
+        }
+
+        t.addCell(new Cell(1, 3).add(new Paragraph(dateBegin + " - " + dateEnd)
                 .setBackgroundColor(DeviceRgb.BLACK)
                 .setFontSize(SMALL_FONT_SIZE)
                 .setFontColor(DeviceRgb.WHITE))
@@ -73,7 +82,7 @@ class GeneralExperienceGenerator {
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getPosition(), txtSize, FONT_HELVETIVA));
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
+        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getShortDescription(), txtSize));
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(String.join(" - ", exp.getTechnologies().stream().map(Technology::toString).collect(Collectors.toList())), txtSize).setItalic());
         return t;
