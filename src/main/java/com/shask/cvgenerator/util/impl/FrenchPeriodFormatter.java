@@ -12,10 +12,10 @@ public class FrenchPeriodFormatter implements PeriodFormatter {
         final int monthsSpent = period.getMonths();
         String label;
         if (yearsSpent < 1) {
-            label = monthsSpent + " mois";
+            label = (monthsSpent < 1 ? "1" : monthsSpent) + " mois";
         } else {
             label = yearsSpent >= 2 ? yearsSpent + " ans " : yearsSpent + " an ";
-            label += monthsSpent > 1 ? "et " + monthsSpent + " mois" : "";
+            label += monthsSpent > 0 ? "et " + monthsSpent + " mois" : "";
         }
         return label;
     }

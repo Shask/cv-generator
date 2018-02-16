@@ -1,30 +1,50 @@
 package com.shask.cvgenerator.service;
 
+import com.shask.cvgenerator.dao.PersonDao;
+import com.shask.cvgenerator.exception.PersonNotFoundException;
 import com.shask.cvgenerator.model.*;
+import com.shask.cvgenerator.service.impl.ItextCvGeneratorService;
 import org.assertj.core.util.Lists;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest
+import static org.mockito.Mockito.when;
+
+@RunWith(MockitoJUnitRunner.class)
 public class CvGeneratorServiceTest {
 
-    private CvGeneratorService cvGeneratorService;
+
+    @Mock
+    private PersonDao personDao;
+
+    @InjectMocks
+    private CvGeneratorService cvGeneratorService = new ItextCvGeneratorService();
+
     private Person me;
-    private final String filepath = "./test.pdf";
+    String lastname = "Feureong";
+    private final String fileURI = "./test.pdf";
+
+    public CvGeneratorServiceTest() throws IOException {
+    }
 
     @Before
     public void before() {
+
 
         List<ExperienceTranslation> fr = Collections.singletonList(ExperienceTranslation.builder()
                 .language("FR")
@@ -127,7 +147,7 @@ public class CvGeneratorServiceTest {
                 .email("zeqionoqn@gmail.com")
                 .jobTitle("Developeur MOUSSE TACHE (et barbe)")
                 .firstName("Stephane")
-                .surname("Feureong")
+                .surname(lastname)
                 .pictureUrl("http://78.media.tumblr.com/3d7038d69d29fd059404629d616e93b6/tumblr_mqnbjkIKDi1s1pua7o1_500.png")
                 .phoneNumber("(+34) 7 78 98 54 21")
                 .experiences(experiences)
@@ -142,11 +162,30 @@ public class CvGeneratorServiceTest {
 
     @Test
     public void testCvGeneration() throws IOException {
-        cvGeneratorService.generate(me, filepath);
+        when(personDao.get(lastname)).thenReturn(Optional.of(me));
+        cvGeneratorService.generate(fileURI,lastname);
+
+        Path filepath = Paths.get(fileURI);
+        Assert.assertTrue(Files.isRegularFile(filepath));
+        Assert.assertTrue(Files.isReadable(filepath));
+        Files.delete(filepath);
     }
 
-    @Autowired
-    public void setCvGeneratorService(final CvGeneratorService cvGeneratorService) {
-        this.cvGeneratorService = cvGeneratorService;
+    @Test(expected = PersonNotFoundException.class)
+    public void testCvGenerationPersonNotFound() throws IOException {
+        when(personDao.get(lastname)).thenReturn(Optional.empty());
+        cvGeneratorService.generate(fileURI,lastname);
     }
+
+
+    @Test(expected = NullPointerException.class)
+    public void testCvGenerationFilenull() throws IOException {
+        cvGeneratorService.generate(null,lastname);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testCvGenerationLastnameNull() throws IOException {
+        cvGeneratorService.generate(fileURI,null);
+    }
+
 }

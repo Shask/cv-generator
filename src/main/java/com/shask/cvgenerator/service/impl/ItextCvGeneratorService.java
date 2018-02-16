@@ -9,20 +9,26 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
+import com.shask.cvgenerator.dao.PersonDao;
+import com.shask.cvgenerator.exception.PersonNotFoundException;
 import com.shask.cvgenerator.model.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.CvGeneratorService;
 import com.shask.cvgenerator.service.impl.minimalist.*;
 import com.shask.cvgenerator.service.impl.util.RhumbusLineSeparator;
 import com.shask.cvgenerator.util.PDFConstants;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class ItextCvGeneratorService implements CvGeneratorService {
 
+    private PersonDao personDao;
 
     private static PdfFont fontHelveticaNueue;
     private static PdfFont fontHelvetica;
@@ -44,7 +50,12 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         lineSeparator = new LineSeparator(new RhumbusLineSeparator());
     }
 
-    public String generate(Person person,String filepath) throws IOException {
+    public String generate(String filepath,String surname) throws IOException {
+        Objects.requireNonNull(filepath);
+        Objects.requireNonNull(surname);
+
+        Person person = personDao.get(surname).orElseThrow(PersonNotFoundException::new);
+
         File file = new File(filepath);
         file.getParentFile().mkdirs();
 
@@ -83,5 +94,10 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         doc.add(new Paragraph());
         doc.add(lineSeparator);
         doc.add(new Paragraph());
+    }
+
+    @Autowired
+    public void setPersonDao(PersonDao personDao) {
+        this.personDao = personDao;
     }
 }

@@ -1,25 +1,11 @@
 package com.shask.cvgenerator.dao.mapping;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shask.cvgenerator.model.Person;
+import lombok.Data;
 
-import java.util.List;
-
+@Data
 public class PersonWrapper {
-    private List<Person> allUsers;
-
-    public PersonWrapper(List<Person> allUsers) {
-        this.allUsers = allUsers;
-    }
-
-    public PersonWrapper() {
-    }
-
-
-    public List<Person> getAllUsers() {
-        return allUsers;
-    }
-
-    public void setAllUsers(List<Person> allUsers) {
-        this.allUsers = allUsers;
-    }
+    @JsonProperty("User")
+    private Person person;
 }

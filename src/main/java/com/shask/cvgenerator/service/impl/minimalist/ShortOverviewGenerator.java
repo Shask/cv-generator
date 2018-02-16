@@ -13,6 +13,7 @@ public class ShortOverviewGenerator implements BlockElementGenerator {
     @Override
     public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);
+        Objects.requireNonNull(person.getShortPresentation());
         return new Paragraph(person.getShortPresentation()).setFont(PDFConstants.FONT_HELVETIVA_NUEUE).setFontSize(PDFConstants.MEDIUM_FONT_SIZE);
     }
 }

@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Log
 public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
 
-
     @Override
     public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);

@@ -5,5 +5,5 @@ import com.shask.cvgenerator.model.Person;
 import java.util.Optional;
 
 public interface PersonDao {
-    Optional<Person> get();
+    Optional<Person> get(String lastname);
 }
