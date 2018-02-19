@@ -1,6 +1,6 @@
 package com.shask.cvgenerator.dao;
 
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.person.Person;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

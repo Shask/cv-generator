@@ -2,7 +2,7 @@ package com.shask.cvgenerator.service.impl.minimalist;
 
 import com.itextpdf.layout.element.BlockElement;
 import com.itextpdf.layout.element.Paragraph;
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.person.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.util.PDFConstants;
 

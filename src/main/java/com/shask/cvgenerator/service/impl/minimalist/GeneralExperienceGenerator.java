@@ -6,9 +6,8 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
-import com.itextpdf.layout.property.VerticalAlignment;
-import com.shask.cvgenerator.model.Experience;
-import com.shask.cvgenerator.model.Technology;
+import com.shask.cvgenerator.model.person.Experience;
+import com.shask.cvgenerator.model.person.Technology;
 import com.shask.cvgenerator.util.PDFConstants;
 import com.shask.cvgenerator.util.impl.FrenchPeriodFormatter;
 
@@ -23,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
 import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA;
-import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA_BOLD;
 import static com.shask.cvgenerator.util.PDFConstants.SMALL_FONT_SIZE;
 
 class GeneralExperienceGenerator {

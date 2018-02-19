@@ -1,5 +1,6 @@
 package com.shask.cvgenerator.service.impl;
 
+import com.itextpdf.io.IOException;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.layout.borders.Border;
@@ -35,7 +36,7 @@ public class ItextPDFHelper {
     }
 
     public static Cell newBasicCell(String content, int rowspan, int colspan) {
-        return new Cell(rowspan, colspan).add(new Paragraph(content)).setBorder(Border.NO_BORDER);
+        return new Cell(rowspan, colspan).add(new Paragraph(content == null ? "" : content)).setBorder(Border.NO_BORDER);
     }
 
     public static Optional<Image> loadImage(String imgUrl) {
@@ -45,13 +46,13 @@ public class ItextPDFHelper {
     public static Optional<Image> loadImage(String imgUrl, String fallbackUrl) {
         try {
             return Optional.of(new Image(ImageDataFactory.create(imgUrl)));
-        } catch (MalformedURLException | NullPointerException e) {
-            log.info("Couldn't find image with the given url");
+        } catch (IOException | NullPointerException | MalformedURLException e) {
+            log.info("Couldn't find image with the given url : " + imgUrl);
             if (fallbackUrl != null) {
                 try {
                     return Optional.of(new Image(ImageDataFactory.create(fallbackUrl)));
-                } catch (MalformedURLException e1) {
-                    log.severe("Couldn't find image in filesystem");
+                } catch (MalformedURLException | IOException e1) {
+                    log.severe("Couldn't find fallback image : "+fallbackUrl+" in filesystem");
                 }
             }
         }

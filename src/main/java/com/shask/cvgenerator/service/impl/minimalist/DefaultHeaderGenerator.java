@@ -26,7 +26,7 @@ public class DefaultHeaderGenerator implements HeaderGenerator {
         Objects.requireNonNull(person);
 
         String fullname = person.getFirstName() + " " + person.getSurname();
-        Optional<Image> img = ItextPDFHelper.loadImage(person.getPictureUrl(), null);
+        Optional<Image> img = ItextPDFHelper.loadImage(person.getPictureUrl());
 
 
         float[] columnWidths = {4, 11, 4};
@@ -58,7 +58,7 @@ public class DefaultHeaderGenerator implements HeaderGenerator {
         table.addCell(ItextPDFHelper.newBasicCell(""));
 
 
-        table.addCell(new Cell().add(buildExternalLinks("./src/main/resources/github.png", "https://github.com/Shask", "github : Shask")).setBorder(Border.NO_BORDER));
+        table.addCell(buildExternalLinkCell("./src/main/resources/github.png", "https://github.com/Shask", "github : Shask"));
         table.addCell(ItextPDFHelper.newBasicCell(" portefolio.io", 1, 1).setTextAlignment(TextAlignment.CENTER));
         table.addCell(ItextPDFHelper.newBasicCell(" steven.fougeron@gmail.com", 1, 1));
 
@@ -68,7 +68,7 @@ public class DefaultHeaderGenerator implements HeaderGenerator {
 
     //TODO Alignement des lien
     // TODO finir la partie sous le header
-    private Table buildExternalLinks(String logoUrl, String urlToLink, String text) {
+    private Cell buildExternalLinkCell(String logoUrl, String urlToLink, String text) {
         final float[] columnWidths = {1, 9};
         Table table = new Table(columnWidths, false).setBorder(Border.NO_BORDER).setMargin(0).setPadding(0);
 
@@ -80,7 +80,8 @@ public class DefaultHeaderGenerator implements HeaderGenerator {
         }
 
         table.addCell(new Cell().add(new Paragraph(text).setAction(PdfAction.createURI(urlToLink)).setUnderline()).setBorder(Border.NO_BORDER));
-        return table;
+
+        return new Cell().add(table).setBorder(Border.NO_BORDER);
     }
 
 

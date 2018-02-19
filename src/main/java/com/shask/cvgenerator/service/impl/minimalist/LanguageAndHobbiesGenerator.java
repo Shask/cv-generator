@@ -4,7 +4,7 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.*;
 import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.person.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.impl.ItextPDFHelper;
 import com.shask.cvgenerator.util.PDFConstants;

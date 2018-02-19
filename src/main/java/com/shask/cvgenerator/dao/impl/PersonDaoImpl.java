@@ -6,7 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.shask.cvgenerator.dao.PersonDao;
 import com.shask.cvgenerator.dao.mapping.PersonData;
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.person.Person;
 import lombok.extern.java.Log;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +51,12 @@ public class PersonDaoImpl implements PersonDao {
                 "surname " +
                 "shortPresentation " +
                 "dob " +
+                "status " +
+                " hobbies" +
+                "    languages {" +
+                "      name" +
+                "      level" +
+                "    }" +
                 "experiences {" +
                 "   location" +
                 "   dateBegin" +

@@ -1,9 +1,9 @@
 package com.shask.cvgenerator.service.impl.minimalist;
 
 import com.itextpdf.layout.element.BlockElement;
-import com.shask.cvgenerator.model.Experience;
-import com.shask.cvgenerator.model.ExperienceType;
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.person.Experience;
+import com.shask.cvgenerator.model.person.ExperienceType;
+import com.shask.cvgenerator.model.person.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 
 import java.util.List;

@@ -11,9 +11,11 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
 import com.shask.cvgenerator.dao.PersonDao;
 import com.shask.cvgenerator.exception.PersonNotFoundException;
-import com.shask.cvgenerator.model.Person;
+import com.shask.cvgenerator.model.parameter.GenerationParameters;
+import com.shask.cvgenerator.model.person.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.CvGeneratorService;
+import com.shask.cvgenerator.service.HeaderGenerator;
 import com.shask.cvgenerator.service.impl.minimalist.*;
 import com.shask.cvgenerator.service.impl.util.RhumbusLineSeparator;
 import com.shask.cvgenerator.util.PDFConstants;
@@ -34,7 +36,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private static PdfFont fontHelvetica;
     private static PdfFont fontHelveticaBold;
 
-    private BlockElementGenerator headerGenerator = new HeaderGenerator();
+    private HeaderGenerator headerGenerator = new DefaultHeaderGenerator();
     private BlockElementGenerator shortOverviewGenerator = new ShortOverviewGenerator();
     private BlockElementGenerator workExperienceGenerator = new WorkExperienceGenerator();
     private BlockElementGenerator universityExperienceGenerator = new UniversityExperienceGenerator();
@@ -50,26 +52,37 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         lineSeparator = new LineSeparator(new RhumbusLineSeparator());
     }
 
-    public String generate(String filepath,String surname) throws IOException {
+    public String generate(String filepath, String surname, GenerationParameters params) throws IOException {
         Objects.requireNonNull(filepath);
         Objects.requireNonNull(surname);
+        Objects.requireNonNull(params);
 
+        //Retreive the person
         Person person = personDao.get(surname).orElseThrow(PersonNotFoundException::new);
 
+        //create file path to futur psf doc
         File file = new File(filepath);
         file.getParentFile().mkdirs();
 
+        //Create pdf doc
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(filepath));
         pdfDoc.setDefaultPageSize(PageSize.A4);
-
         Document document = new Document(pdfDoc);
         document.setFont(fontHelveticaNueue);
 
-        document.add(headerGenerator.generateFor(person));
+
+        if(params.isAnonymous())
+        {
+            person.anonymise(params.getCompanyLogoUrl(),params.getCompanyName());
+        }
+
+        document.add(headerGenerator.generateFor(person,params));
         addSpacer(document);
 
-        document.add(shortOverviewGenerator.generateFor(person));
-        addSpacer(document);
+        if(person.getShortPresentation() != null && !person.getShortPresentation().trim().isEmpty()) {
+            document.add(shortOverviewGenerator.generateFor(person));
+            addSpacer(document);
+        }
 
         document.add(new Paragraph("Experience").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
         document.add(workExperienceGenerator.generateFor(person));
@@ -82,7 +95,6 @@ public class ItextCvGeneratorService implements CvGeneratorService {
 
         document.add(new Paragraph("Langues et Loisirs").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
         document.add(languageAndHobbiesGenerator.generateFor(person));
-
 
 
         pdfDoc.close();
