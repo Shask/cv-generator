@@ -8,6 +8,7 @@ import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.VerticalAlignment;
 import com.shask.cvgenerator.model.parameter.GenerationParameters;
 import com.shask.cvgenerator.model.person.Person;
+import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.HeaderGenerator;
 import com.shask.cvgenerator.service.impl.ItextPDFHelper;
 import com.shask.cvgenerator.util.PDFConstants;
@@ -19,10 +20,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Log
-public class DefaultHeaderGenerator implements HeaderGenerator {
+public class DefaultHeaderGenerator implements BlockElementGenerator{
 
     @Override
-    public BlockElement generateFor(final Person person, GenerationParameters parameters) {
+    public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);
 
         String fullname = person.getFirstName() + " " + person.getSurname();

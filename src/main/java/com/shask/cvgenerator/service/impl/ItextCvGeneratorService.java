@@ -36,7 +36,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private static PdfFont fontHelvetica;
     private static PdfFont fontHelveticaBold;
 
-    private HeaderGenerator headerGenerator = new DefaultHeaderGenerator();
+    private BlockElementGenerator headerGenerator = new DefaultHeaderGenerator();
     private BlockElementGenerator shortOverviewGenerator = new ShortOverviewGenerator();
     private BlockElementGenerator workExperienceGenerator = new WorkExperienceGenerator();
     private BlockElementGenerator universityExperienceGenerator = new UniversityExperienceGenerator();
@@ -60,7 +60,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         //Retreive the person
         Person person = personDao.get(surname).orElseThrow(PersonNotFoundException::new);
 
-        //create file path to futur psf doc
+        //create file path to futur pdf doc
         File file = new File(filepath);
         file.getParentFile().mkdirs();
 
@@ -71,12 +71,11 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         document.setFont(fontHelveticaNueue);
 
 
-        if(params.isAnonymous())
-        {
-            person.anonymise(params.getCompanyLogoUrl(),params.getCompanyName());
+        if(params.isAnonymous()) {
+            person.anonymise(params.getCompanyLogoUrl(), params.getCompanyName());
         }
 
-        document.add(headerGenerator.generateFor(person,params));
+        document.add(headerGenerator.generateFor(person));
         addSpacer(document);
 
         if(person.getShortPresentation() != null && !person.getShortPresentation().trim().isEmpty()) {

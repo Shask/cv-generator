@@ -21,7 +21,7 @@ public class CvGeneratorApplicationTests {
     @Test
     public void contextLoads() throws IOException {
 
-        cvGeneratorService.generate("./testRealData.pdf", "Fougeron", new GenerationParameters(false, "Excilys", ""));
+        cvGeneratorService.generate("./testRealData.pdf", "Fougeron", new GenerationParameters(true, "Excilys", ""));
     }
 
 }

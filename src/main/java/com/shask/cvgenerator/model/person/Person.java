@@ -39,7 +39,7 @@ public class Person {
         phoneNumber = "";
         email = "";
         pictureUrl = companyLogoUrl;
-        status += " " + companyName;
+        status += " avec " + companyName;
         city = "";
         dob = null;
         return this;
