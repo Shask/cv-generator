@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 @Builder
 @Log
-public class Experience {
+public class Experience implements Comparable<Experience>{
 
     private LocalDate dateBegin;
     private LocalDate dateEnd;
@@ -24,5 +24,10 @@ public class Experience {
 
     public ExperienceTranslation getExperienceTranslation(String local) {
         return experienceTranslations.stream().filter(e -> local.equals(e.getLanguage())).findFirst().orElseThrow(LanguageNotFoundException::new);
+    }
+
+    @Override
+    public int compareTo(final Experience o) {
+        return o.dateBegin.compareTo(this.dateBegin);
     }
 }

@@ -14,11 +14,10 @@ import com.shask.cvgenerator.util.impl.FrenchPeriodFormatter;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
 import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA;
@@ -28,22 +27,16 @@ class GeneralExperienceGenerator {
 
     private final static FrenchPeriodFormatter frenchPeriodFormatter = new FrenchPeriodFormatter();
 
-    protected Table experienceListElement(List<Experience> experiences) {
-
+    protected Table experienceListElement(List<Experience> experiences,final int numberOfColumns) {
         Objects.requireNonNull(experiences);
 
-        float[] columnWidths = {1, 1};
-        Table finalTable = new Table(columnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
+        Table finalTable = new Table(numberOfColumns, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
 
-        List<Table> degrees = new ArrayList<>();
-
-        for (Experience exp : experiences) {
-            degrees.add(experienceElement(exp));
-        }
-
-        for (Table degree : degrees) {
-            finalTable.addCell(new Cell().add(degree).setBorder(Border.NO_BORDER));
-        }
+        experiences.stream()
+            .sorted()
+            .map(this::experienceElement)
+            .map(element -> new Cell().add(element).setBorder(Border.NO_BORDER))
+            .forEach(finalTable::addCell);
         return finalTable;
     }
 
@@ -80,7 +73,7 @@ class GeneralExperienceGenerator {
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getPosition(), txtSize, FONT_HELVETIVA));
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getShortDescription(), txtSize));
+        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(String.join(" - ", exp.getTechnologies().stream().map(Technology::toString).collect(Collectors.toList())), txtSize).setItalic());
         return t;

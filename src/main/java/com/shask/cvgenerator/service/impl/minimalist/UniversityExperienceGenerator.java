@@ -18,6 +18,6 @@ public class UniversityExperienceGenerator extends GeneralExperienceGenerator im
 
         List<Experience> universityExperience =
             person.getExperiences().stream().filter(e -> e.getType() == ExperienceType.University).collect(Collectors.toList());
-        return experienceListElement(universityExperience);
+        return experienceListElement(universityExperience,2);
     }
 }

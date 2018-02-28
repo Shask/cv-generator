@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.shask.cvgenerator.util.PDFConstants.RHOMBUS_ICON;
+
 @Log
 public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
 
@@ -26,7 +28,7 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
 
         Table finalTable = new Table(finalTableColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
 
-        Optional<Image> img = ItextPDFHelper.loadImage( "./src/main/resources/rhombusLD.png");
+        Optional<Image> img = ItextPDFHelper.loadImage( RHOMBUS_ICON);
         Cell imgCell=new Cell();
         img.ifPresent(image -> imgCell.add(image.setHeight(8)));
 

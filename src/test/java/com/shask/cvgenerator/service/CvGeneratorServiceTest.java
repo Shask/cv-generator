@@ -47,7 +47,7 @@ public class CvGeneratorServiceTest {
 
     @Before
     public void before() {
-        parameters = new GenerationParameters(true,"French Corp. IO","./src/main/resources/tallLogo.png");
+        parameters = new GenerationParameters(true,"French Corp. IO","./src/test/resources/tallLogo.png");
 
         List<ExperienceTranslation> fr = Collections.singletonList(ExperienceTranslation.builder()
                 .language("FR")

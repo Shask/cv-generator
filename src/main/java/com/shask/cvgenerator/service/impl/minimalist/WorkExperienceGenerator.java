@@ -15,8 +15,10 @@ public class WorkExperienceGenerator extends GeneralExperienceGenerator implemen
     @Override
     public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);
-        List<Experience> universityExperience = person.getExperiences().stream().filter(e -> e.getType() == ExperienceType.Work).collect(Collectors.toList());
-        return experienceListElement(universityExperience);
+        List<Experience> universityExperience = person.getExperiences()
+            .stream().filter(e -> e.getType() == ExperienceType.Work || e.getType() == ExperienceType.Internship)
+            .collect(Collectors.toList());
+        return experienceListElement(universityExperience,1);
     }
 
 }
