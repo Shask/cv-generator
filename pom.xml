@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <ok.http.version>3.9.1</ok.http.version>
         <itext.version>7.1.0</itext.version>
+        <itext.html.version>5.0.6</itext.html.version>
         <lombok.version>1.16.18</lombok.version>
         <jackson.version>2.9.0</jackson.version>
     </properties>
@@ -70,7 +71,8 @@
             <artifactId>itext7-core</artifactId>
             <version>${itext.version}</version>
         </dependency>
-
+    
+    
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>

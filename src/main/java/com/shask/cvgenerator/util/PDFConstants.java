@@ -20,10 +20,10 @@ public class PDFConstants {
   //  public static final String PORTEFOLIO_ICON = "./src/main/resources/bracket.png";
 
     public static Integer VERY_LARGE_FONT_SIZE = 20;
-    public static Integer LARGE_FONT_SIZE = 15;
-    public static Integer MEDIUM_FONT_SIZE = 11;
-    public static Integer MEDIUM_PLUS_FONT_SIZE = 12;
-    public static Integer SMALL_FONT_SIZE = 9;
+    public static Integer LARGE_FONT_SIZE = 14;
+    public static Integer MEDIUM_FONT_SIZE = 10;
+    public static Integer MEDIUM_PLUS_FONT_SIZE = 11;
+    public static Integer SMALL_FONT_SIZE = 8;
 
 
     public static PdfFont FONT_HELVETIVA_NUEUE = null;

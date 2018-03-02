@@ -37,6 +37,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private static PdfFont fontHelveticaBold;
 
     private BlockElementGenerator headerGenerator = new DefaultHeaderGenerator();
+    private BlockElementGenerator annonymousHeaderGenerator = new AnnonymousHeaderGenerator();
     private BlockElementGenerator shortOverviewGenerator = new ShortOverviewGenerator();
     private BlockElementGenerator workExperienceGenerator = new WorkExperienceGenerator();
     private BlockElementGenerator universityExperienceGenerator = new UniversityExperienceGenerator();
@@ -52,13 +53,14 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         lineSeparator = new LineSeparator(new RhumbusLineSeparator());
     }
 
-    public String generate(String filepath, String surname, GenerationParameters params) throws IOException {
+    public String generate(String filepath, String surname, GenerationParameters generationParameters) throws IOException {
         Objects.requireNonNull(filepath);
         Objects.requireNonNull(surname);
-        Objects.requireNonNull(params);
+        Objects.requireNonNull(generationParameters);
 
         //Retreive the person
         Person person = personDao.get(surname).orElseThrow(PersonNotFoundException::new);
+        person = person.customiseWith(generationParameters);
 
         //create file path to futur pdf doc
         File file = new File(filepath);
@@ -71,11 +73,11 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         document.setFont(fontHelveticaNueue);
 
 
-        if(params.isAnonymous()) {
-            person.anonymise(params.getCompanyLogoUrl(), params.getCompanyName());
+        if (generationParameters.isAnonymous()) {
+            document.add(annonymousHeaderGenerator.generateFor(person));
+        } else {
+            document.add(headerGenerator.generateFor(person));
         }
-
-        document.add(headerGenerator.generateFor(person));
         addSpacer(document);
 
         if(person.getShortPresentation() != null && !person.getShortPresentation().trim().isEmpty()) {
@@ -83,16 +85,16 @@ public class ItextCvGeneratorService implements CvGeneratorService {
             addSpacer(document);
         }
 
-        document.add(new Paragraph("Experience").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
+        document.add(getTitle("Experience"));
         document.add(workExperienceGenerator.generateFor(person));
         addSpacer(document);
 
-        document.add(new Paragraph("Scolarité").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
+        document.add(getTitle("Scolarité"));
         document.add(universityExperienceGenerator.generateFor(person));
         addSpacer(document);
 
 
-        document.add(new Paragraph("Langues et Loisirs").setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE));
+        document.add(getTitle("Langues et Loisirs"));
         document.add(languageAndHobbiesGenerator.generateFor(person));
 
 
@@ -105,6 +107,11 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         doc.add(new Paragraph());
         doc.add(lineSeparator);
         doc.add(new Paragraph());
+    }
+
+    private Paragraph getTitle(String title)
+    {
+        return new Paragraph(title).setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE);
     }
 
     @Autowired

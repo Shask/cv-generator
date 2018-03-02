@@ -3,6 +3,7 @@ package com.shask.cvgenerator.service.impl.minimalist;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
+import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
@@ -11,15 +12,17 @@ import com.shask.cvgenerator.model.person.Technology;
 import com.shask.cvgenerator.util.PDFConstants;
 import com.shask.cvgenerator.util.impl.FrenchPeriodFormatter;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collector;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
+import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newEmptyCell;
 import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA;
 import static com.shask.cvgenerator.util.PDFConstants.SMALL_FONT_SIZE;
 
@@ -73,9 +76,18 @@ class GeneralExperienceGenerator {
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getPosition(), txtSize, FONT_HELVETIVA));
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
+        t.addCell(formatHtmlToCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
         t.addCell(newBasicCell("", padding));
         t.addCell(newBasicCell(String.join(" - ", exp.getTechnologies().stream().map(Technology::toString).collect(Collectors.toList())), txtSize).setItalic());
         return t;
+    }
+
+    private Cell formatHtmlToCell(String html,int colspan) {
+        String[] elements = html.split("<br>");
+        Cell cell = new Cell(1,colspan).setBorder(Border.NO_BORDER);
+        for (String element : elements) {
+            cell.add(new Paragraph(element));
+        }
+        return cell;
     }
 }
