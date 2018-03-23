@@ -42,6 +42,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private BlockElementGenerator workExperienceGenerator = new WorkExperienceGenerator();
     private BlockElementGenerator universityExperienceGenerator = new UniversityExperienceGenerator();
     private BlockElementGenerator languageAndHobbiesGenerator = new LanguageAndHobbiesGenerator();
+    private BlockElementGenerator skillsetGenerator= new SkillsetGenerator();
 
     private static LineSeparator lineSeparator;
 
@@ -84,6 +85,10 @@ public class ItextCvGeneratorService implements CvGeneratorService {
             document.add(shortOverviewGenerator.generateFor(person));
             addSpacer(document);
         }
+
+        document.add(getTitle("Compétences"));
+        document.add(skillsetGenerator.generateFor(person));
+        addSpacer(document);
 
         document.add(getTitle("Experience"));
         document.add(workExperienceGenerator.generateFor(person));

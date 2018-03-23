@@ -52,11 +52,16 @@ public class PersonDaoImpl implements PersonDao {
                 "shortPresentation " +
                 "dob " +
                 "status " +
-                " hobbies" +
+                 " hobbies" +
+                " technologies (filter: {advertised: true}){" +
+                "   name" +
+                "   type" +
+                "   version" +
+                " }" +
                 "    languages {" +
                 "      name" +
                 "      level" +
-                "    }" +
+                " }" +
                 "experiences {" +
                 "   location" +
                 "   dateBegin" +

@@ -1,8 +1,11 @@
 package com.shask.cvgenerator.model.person;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shask.cvgenerator.model.parameter.GenerationParameters;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -10,7 +13,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Data
+@Getter
+@Setter
 @Builder
 public class Person {
 
@@ -30,10 +34,12 @@ public class Person {
     private String shortPresentation;
     private List<String> hobbies;
     private List<Language> languages;
+    @JsonProperty("technologies")
+    private List<Technology> skillset;
     private String github;
     private String portefolioLink;
 
-    public Person anonymise() {
+    private Person anonymise() {
         surname = surname != null && surname.length() > 1 ? surname.substring(0, 1) + "." : "";
         adress1 = "";
         adress2 = "";
