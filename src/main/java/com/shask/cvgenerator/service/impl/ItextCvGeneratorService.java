@@ -6,6 +6,7 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.BlockElement;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
@@ -15,7 +16,6 @@ import com.shask.cvgenerator.model.parameter.GenerationParameters;
 import com.shask.cvgenerator.model.person.Person;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.service.CvGeneratorService;
-import com.shask.cvgenerator.service.HeaderGenerator;
 import com.shask.cvgenerator.service.impl.minimalist.*;
 import com.shask.cvgenerator.service.impl.util.RhumbusLineSeparator;
 import com.shask.cvgenerator.util.PDFConstants;
@@ -25,7 +25,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class ItextCvGeneratorService implements CvGeneratorService {
@@ -73,7 +72,21 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         Document document = new Document(pdfDoc);
         document.setFont(fontHelveticaNueue);
 
+        addHeader(document,generationParameters,person);
 
+        addElement("Compétences",skillsetGenerator,true,person,document);
+        addElement("Experiences",workExperienceGenerator,true,person,document);
+        addElement("Scolarité",universityExperienceGenerator,true,person,document);
+        addElement("Langues et Loisirs",languageAndHobbiesGenerator,false,person,document);
+
+
+        pdfDoc.close();
+
+        return filepath;
+    }
+
+    private void addHeader(Document document,GenerationParameters generationParameters, Person person)
+    {
         if (generationParameters.isAnonymous()) {
             document.add(annonymousHeaderGenerator.generateFor(person));
         } else {
@@ -81,31 +94,18 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         }
         addSpacer(document);
 
-        if(person.getShortPresentation() != null && !person.getShortPresentation().trim().isEmpty()) {
+        if (person.getShortPresentation() != null && !person.getShortPresentation().trim().isEmpty()) {
             document.add(shortOverviewGenerator.generateFor(person));
             addSpacer(document);
         }
+    }
 
-        document.add(getTitle("Compétences"));
-        document.add(skillsetGenerator.generateFor(person));
-        addSpacer(document);
-
-        document.add(getTitle("Experience"));
-        document.add(workExperienceGenerator.generateFor(person));
-        addSpacer(document);
-
-        document.add(getTitle("Scolarité"));
-        document.add(universityExperienceGenerator.generateFor(person));
-        addSpacer(document);
-
-
-        document.add(getTitle("Langues et Loisirs"));
-        document.add(languageAndHobbiesGenerator.generateFor(person));
-
-
-        pdfDoc.close();
-
-        return filepath;
+    private void addElement(String title, BlockElementGenerator generator, boolean withSpacer, Person person, Document document) {
+        document.add(getTitle(title));
+        document.add(generator.generateFor(person));
+        if (withSpacer) {
+            addSpacer(document);
+        }
     }
 
     private void addSpacer(Document doc) {
@@ -114,8 +114,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         doc.add(new Paragraph());
     }
 
-    private Paragraph getTitle(String title)
-    {
+    private Paragraph getTitle(String title) {
         return new Paragraph(title).setTextAlignment(TextAlignment.CENTER).setBold().setFontSize(PDFConstants.MEDIUM_PLUS_FONT_SIZE);
     }
 

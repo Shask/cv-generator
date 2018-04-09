@@ -10,8 +10,6 @@ import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Getter
 @Setter
@@ -36,8 +34,9 @@ public class Person {
     private List<Language> languages;
     @JsonProperty("technologies")
     private List<Technology> skillset;
-    private String github;
-    private String portefolioLink;
+    private String githubUrl;
+    private String websiteUrl;
+    private String linkedinUrl;
 
     private Person anonymise() {
         surname = surname != null && surname.length() > 1 ? surname.substring(0, 1) + "." : "";
@@ -49,12 +48,13 @@ public class Person {
         city = "";
         pictureUrl = "";
         dob = null;
-        github="";
-        portefolioLink="";
+        githubUrl ="";
+        websiteUrl ="";
+        linkedinUrl="";
         return this;
     }
 
-    public Person customiseWith(String companyLogoUrl, String companyName) {
+    private Person customiseWith(String companyLogoUrl, String companyName) {
         if (! StringUtils.isEmpty(companyLogoUrl)) {
             pictureUrl = companyLogoUrl;
         }

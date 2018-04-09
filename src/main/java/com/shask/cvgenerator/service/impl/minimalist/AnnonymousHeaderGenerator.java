@@ -28,7 +28,7 @@ public class AnnonymousHeaderGenerator implements BlockElementGenerator{
         Optional<Image> img = ItextPDFHelper.loadImage(person.getPictureUrl());
 
 
-        float[] columnWidths = {4, 11, 4};
+        float[] columnWidths = {1, 3, 1};
         Table table = new Table(columnWidths, true).setFontSize(PDFConstants.SMALL_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         Cell imgCell = new Cell(6, 1)

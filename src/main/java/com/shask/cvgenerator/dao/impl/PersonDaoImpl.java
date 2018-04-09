@@ -52,6 +52,9 @@ public class PersonDaoImpl implements PersonDao {
                 "shortPresentation " +
                 "dob " +
                 "status " +
+                "githubUrl " +
+                "linkedinUrl " +
+                "websiteUrl " +
                  " hobbies" +
                 " technologies (filter: {advertised: true}){" +
                 "   name" +

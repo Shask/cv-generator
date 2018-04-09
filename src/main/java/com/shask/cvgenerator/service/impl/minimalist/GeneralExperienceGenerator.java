@@ -47,7 +47,7 @@ class GeneralExperienceGenerator {
         Objects.requireNonNull(exp);
 
         float[] innerColumnWidths = {1, 1, 1, 1, 1, 1, 1, 1};
-        Table t = new Table(innerColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE);
+        Table t = new Table(innerColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setKeepTogether(true);
 
         String dateBegin, dateEnd;
         dateBegin = exp.getDateBegin().format(DateTimeFormatter.ofPattern("MMM yyyy", Locale.FRANCE));

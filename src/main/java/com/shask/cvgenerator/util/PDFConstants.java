@@ -14,10 +14,10 @@ public class PDFConstants {
     public static final Float DOCUMENT_MARGIN =  PageSize.A4.getWidth() * 0.02f;
     public static final String FONT = "./src/main/resources/font/HelveticaNeue.ttf";
 
-    public static final String GITHUB_ICON = "./src/main/resources/github.jpg";
+    public static final String GITHUB_ICON = "./src/main/resources/github.png";
+    public static final String LINKEDIN_ICON = "./src/main/resources/linkedin.png";
     public static final String EMAIL_ICON = "./src/main/resources/email.png";
     public static final String RHOMBUS_ICON = "./src/main/resources/rhombusLD.png";
-  //  public static final String PORTEFOLIO_ICON = "./src/main/resources/bracket.png";
 
     public static Integer VERY_LARGE_FONT_SIZE = 20;
     public static Integer LARGE_FONT_SIZE = 14;

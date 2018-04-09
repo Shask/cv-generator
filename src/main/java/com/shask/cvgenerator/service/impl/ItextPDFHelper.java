@@ -82,7 +82,7 @@ public class ItextPDFHelper {
 
         Optional<Image> logo = ItextPDFHelper.loadImage(logoUrl);
         if (logo.isPresent()) {
-            table.addCell(new Cell().add(logo.get().setMaxHeight(9).setMaxHeight(9)).setBorder(Border.NO_BORDER));
+            table.addCell(new Cell().add(logo.get().setMaxHeight(10).setMaxWidth(10)).setBorder(Border.NO_BORDER));
         } else {
             table.addCell(new Cell().setBorder(Border.NO_BORDER));
         }

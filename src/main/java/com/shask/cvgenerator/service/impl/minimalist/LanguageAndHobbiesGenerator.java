@@ -24,13 +24,11 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
     public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);
 
-        float[] finalTableColumnWidths = {1,1};
-
-        Table finalTable = new Table(finalTableColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
+        Table finalTable = new Table(2, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         Optional<Image> img = ItextPDFHelper.loadImage( RHOMBUS_ICON);
         Cell imgCell=new Cell();
-        img.ifPresent(image -> imgCell.add(image.setHeight(8)));
+        img.ifPresent(image -> imgCell.add(image.setHeight(7)));
 
         java.util.List<Table> languagesAndHobbiesList = new ArrayList<>();
 
@@ -47,9 +45,7 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
                 .collect(Collectors.toList()));
         }
 
-        for (Table item : languagesAndHobbiesList) {
-            finalTable.addCell(new Cell().add(item).setBorder(Border.NO_BORDER));
-        }
+        languagesAndHobbiesList.forEach(item -> finalTable.addCell(new Cell().add(item).setBorder(Border.NO_BORDER)));
 
         return finalTable;
     }
