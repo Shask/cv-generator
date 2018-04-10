@@ -34,7 +34,7 @@ public class DefaultHeaderGenerator implements BlockElementGenerator {
 
 
         float[] columnWidths = {1, 3, 1};
-        Table table = new Table(columnWidths, true).setFontSize(PDFConstants.SMALL_FONT_SIZE).setBorder(Border.NO_BORDER);
+        Table table = new Table(columnWidths,true).setFontSize(PDFConstants.SMALL_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         Cell imgCell = new Cell(6, 1)
                 .setHorizontalAlignment(HorizontalAlignment.RIGHT)

@@ -153,5 +153,5 @@ test.pdf
 # End of https://www.gitignore.io/api/git,java,linux,maven,windows,intellij
 
 
-application.properties
+*/application.properties
 testRealData.pdf

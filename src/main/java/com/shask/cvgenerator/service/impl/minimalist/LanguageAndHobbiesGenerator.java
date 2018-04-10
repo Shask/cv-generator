@@ -24,11 +24,11 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
     public BlockElement generateFor(final Person person) {
         Objects.requireNonNull(person);
 
-        Table finalTable = new Table(2, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
+        Table finalTable = new Table(2).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
 
         Optional<Image> img = ItextPDFHelper.loadImage( RHOMBUS_ICON);
         Cell imgCell=new Cell();
-        img.ifPresent(image -> imgCell.add(image.setHeight(7)));
+        img.ifPresent(image -> imgCell.add(image.setHeight(6)));
 
         java.util.List<Table> languagesAndHobbiesList = new ArrayList<>();
 
@@ -40,12 +40,12 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
 
         }
         if (person.getHobbies() != null) {
-            languagesAndHobbiesList.addAll(person.getHobbies().stream()
+            languagesAndHobbiesList.addAll(person.getHobbies().stream().sorted()
                 .map(hobbie -> getTableFormated(imgCell,hobbie))
                 .collect(Collectors.toList()));
         }
 
-        languagesAndHobbiesList.forEach(item -> finalTable.addCell(new Cell().add(item).setBorder(Border.NO_BORDER)));
+       languagesAndHobbiesList.stream().map(item->new Cell().add(item).setBorder(Border.NO_BORDER)).forEach(finalTable::addCell);
 
         return finalTable;
     }
@@ -53,7 +53,7 @@ public class LanguageAndHobbiesGenerator implements BlockElementGenerator {
     private Table getTableFormated(Cell imgCell ,String libelle)
     {
         float[] innerTableColumnWidths = {1, 12};
-        Table table = new Table(innerTableColumnWidths, true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
+        Table table = new Table(innerTableColumnWidths,true).setFontSize(PDFConstants.MEDIUM_FONT_SIZE).setBorder(Border.NO_BORDER);
         table.addCell(imgCell.setVerticalAlignment(VerticalAlignment.MIDDLE).setHorizontalAlignment(HorizontalAlignment.RIGHT).setBorder(Border.NO_BORDER));
         table.addCell(new Cell().add(new Paragraph(libelle)).setVerticalAlignment(VerticalAlignment.MIDDLE).setHorizontalAlignment(HorizontalAlignment.LEFT)
             .setBorder(Border.NO_BORDER));

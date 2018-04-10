@@ -77,12 +77,13 @@ public class ItextPDFHelper {
     }
 
     public static Cell newHyperLinkWithLogoCell(String logoUrl, String hyperlink, String label) {
-        final float[] columnWidths = {1, 9};
-        Table table = new Table(columnWidths, false).setBorder(Border.NO_BORDER).setMargin(0).setPadding(0);
+        final float[] columnWidths = {1, 8};
+        Table table = new Table(2, false).setBorder(Border.NO_BORDER).setMinHeight(16).setMinWidth(16);
 
         Optional<Image> logo = ItextPDFHelper.loadImage(logoUrl);
         if (logo.isPresent()) {
-            table.addCell(new Cell().add(logo.get().setMaxHeight(10).setMaxWidth(10)).setBorder(Border.NO_BORDER));
+            Image img = logo.get().scaleToFit(10,10);
+            table.addCell(new Cell().add(img).setBorder(Border.NO_BORDER));
         } else {
             table.addCell(new Cell().setBorder(Border.NO_BORDER));
         }

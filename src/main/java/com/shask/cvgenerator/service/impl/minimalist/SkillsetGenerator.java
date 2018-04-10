@@ -10,6 +10,7 @@ import com.shask.cvgenerator.model.person.Technology;
 import com.shask.cvgenerator.service.BlockElementGenerator;
 import com.shask.cvgenerator.util.PDFConstants;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -29,14 +30,17 @@ public class SkillsetGenerator implements BlockElementGenerator {
 
         final Map<String, String> skillByTypeMap = person.getSkillset().stream()
             .collect(Collectors.groupingBy(Technology::getType,
-                collectingAndThen(toList(), list -> list.stream().map(Technology::getName).collect(Collectors.joining(", ")))));
+                collectingAndThen(toList(),
+                    list -> list.stream().map(Technology::getName)
+                    .sorted(Comparator.reverseOrder())
+                    .collect(Collectors.joining(", ")))));
 
-        skillByTypeMap.keySet().stream().map(key -> newHyperLinkWithLogoCell(key, skillByTypeMap.get(key))).forEach(table::addCell);
+        skillByTypeMap.keySet().stream().map(key -> newCellWithTitle(key, skillByTypeMap.get(key))).forEach(table::addCell);
 
         return table;
     }
 
-    private static Cell newHyperLinkWithLogoCell(String title, String content) {
+    private static Cell newCellWithTitle(String title, String content) {
         final float[] columnWidths = {1, 9};
         Table table = new Table(columnWidths, false).setBorder(Border.NO_BORDER).setMargin(0).setPadding(0);
 
