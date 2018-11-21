@@ -6,11 +6,10 @@ import com.itextpdf.kernel.geom.PageSize;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.BlockElement;
 import com.itextpdf.layout.element.LineSeparator;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.property.TextAlignment;
-import com.shask.cvgenerator.dao.PersonDao;
+import com.shask.cvgenerator.dao.PersonRepository;
 import com.shask.cvgenerator.exception.PersonNotFoundException;
 import com.shask.cvgenerator.model.parameter.GenerationParameters;
 import com.shask.cvgenerator.model.person.Person;
@@ -26,14 +25,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA_NUEUE;
+
 @Service
 public class ItextCvGeneratorService implements CvGeneratorService {
 
-    private PersonDao personDao;
-
-    private static PdfFont fontHelveticaNueue;
-    private static PdfFont fontHelvetica;
-    private static PdfFont fontHelveticaBold;
+    private PersonRepository personRepository;
 
     private BlockElementGenerator headerGenerator = new DefaultHeaderGenerator();
     private BlockElementGenerator annonymousHeaderGenerator = new AnnonymousHeaderGenerator();
@@ -46,10 +43,6 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     private static LineSeparator lineSeparator;
 
     public ItextCvGeneratorService() throws IOException {
-        fontHelveticaNueue = PdfFontFactory.createFont(PDFConstants.FONT, true);
-        fontHelvetica = PdfFontFactory.createFont("Helvetica");
-        fontHelveticaBold = PdfFontFactory.createFont("Helvetica-Bold");
-
         lineSeparator = new LineSeparator(new RhumbusLineSeparator());
     }
 
@@ -59,7 +52,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         Objects.requireNonNull(generationParameters);
 
         //Retreive the person
-        Person person = personDao.get(surname).orElseThrow(PersonNotFoundException::new);
+        Person person = personRepository.get(surname).orElseThrow(PersonNotFoundException::new);
         person = person.customiseWith(generationParameters);
 
         //create file path to futur pdf doc
@@ -70,7 +63,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(filepath));
         pdfDoc.setDefaultPageSize(PageSize.A4);
         Document document = new Document(pdfDoc);
-        document.setFont(fontHelveticaNueue);
+        document.setFont(FONT_HELVETIVA_NUEUE.get());
 
         addHeader(document,generationParameters,person);
 
@@ -119,7 +112,7 @@ public class ItextCvGeneratorService implements CvGeneratorService {
     }
 
     @Autowired
-    public void setPersonDao(PersonDao personDao) {
-        this.personDao = personDao;
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 }

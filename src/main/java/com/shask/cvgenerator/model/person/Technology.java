@@ -17,8 +17,9 @@ public class Technology implements Comparable<Technology> {
     private String version;
     private boolean advertised;
 
-    public Technology(String name) {
+    public Technology(String name,String type) {
         this.name = name;
+        this.type = type;
     }
 
     @Override

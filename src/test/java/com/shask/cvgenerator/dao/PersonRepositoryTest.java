@@ -12,21 +12,21 @@ import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class PersonDaoTest {
+public class PersonRepositoryTest {
 
-    private PersonDao personDao;
+    private PersonRepository personRepository;
 
 
     @Test
     public void getTest() {
-        Optional<Person> p = personDao.get("Fougeron");
+        Optional<Person> p = personRepository.get("Fougeron");
         Assert.assertNotNull(p);
         Assert.assertTrue(p.isPresent());
         Assert.assertTrue(p.get().getFirstName() != null && !p.get().getFirstName().equals(""));
     }
 
     @Autowired
-    public void setPersonDao(PersonDao personDao) {
-        this.personDao = personDao;
+    public void setPersonRepository(PersonRepository personRepository) {
+        this.personRepository = personRepository;
     }
 }

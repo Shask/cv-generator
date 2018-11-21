@@ -3,7 +3,6 @@ package com.shask.cvgenerator.service.impl.minimalist;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.IElement;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
@@ -12,18 +11,15 @@ import com.shask.cvgenerator.model.person.Technology;
 import com.shask.cvgenerator.util.PDFConstants;
 import com.shask.cvgenerator.util.impl.FrenchPeriodFormatter;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newBasicCell;
-import static com.shask.cvgenerator.service.impl.ItextPDFHelper.newEmptyCell;
 import static com.shask.cvgenerator.util.PDFConstants.FONT_HELVETIVA;
 import static com.shask.cvgenerator.util.PDFConstants.SMALL_FONT_SIZE;
 
@@ -73,9 +69,9 @@ class GeneralExperienceGenerator {
         final int padding = 1;
         final int txtSize = innerColumnWidths.length - padding;
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(exp.getEstablishment().getName(), txtSize, PDFConstants.FONT_HELVETIVA_BOLD));
+        t.addCell(newBasicCell(exp.getEstablishment().getName(), txtSize, PDFConstants.FONT_HELVETIVA_BOLD.get()));
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getPosition(), txtSize, FONT_HELVETIVA));
+        t.addCell(newBasicCell(exp.getExperienceTranslation("FR").getPosition(), txtSize, FONT_HELVETIVA.get()));
         t.addCell(newBasicCell("", padding));
         t.addCell(formatHtmlToCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
         t.addCell(newBasicCell("", padding));

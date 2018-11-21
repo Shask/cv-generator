@@ -1,6 +1,6 @@
 package com.shask.cvgenerator.service;
 
-import com.shask.cvgenerator.dao.PersonDao;
+import com.shask.cvgenerator.dao.PersonRepository;
 import com.shask.cvgenerator.exception.PersonNotFoundException;
 import com.shask.cvgenerator.model.parameter.GenerationParameters;
 import com.shask.cvgenerator.model.person.*;
@@ -20,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class CvGeneratorServiceTest {
 
 
     @Mock
-    private PersonDao personDao;
+    private PersonRepository personRepository;
 
     @InjectMocks
     private CvGeneratorService cvGeneratorService = new ItextCvGeneratorService();
@@ -77,8 +78,8 @@ public class CvGeneratorServiceTest {
                         .establishment(excilys)
                         .location("Paris")
                         .type(ExperienceType.Work)
-                        .technologies(Lists.newArrayList(new Technology("Java"), new Technology("Spring"), new Technology("Hibernate"), new Technology("Javascript"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
                         .experienceTranslations(fr2)
                         .build(),
 
@@ -88,8 +89,8 @@ public class CvGeneratorServiceTest {
                         .establishment(laSofia)
                         .location("Paris")
                         .type(ExperienceType.Work)
-                        .technologies(Lists.newArrayList(new Technology("Java"), new Technology("Spring"), new Technology("Hibernate"), new Technology("Javascript"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
                         .experienceTranslations(fr2)
                         .build(),
 
@@ -100,8 +101,8 @@ public class CvGeneratorServiceTest {
                         .location("Paris")
                         .establishment(new Establishment("", "Excilys"))
                         .experienceTranslations(fr)
-                        .technologies(Lists.newArrayList(new Technology("Java"), new Technology("Spring"), new Technology("Hibernate"), new Technology("Javascript"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
 
                         .build(),
 
@@ -111,8 +112,8 @@ public class CvGeneratorServiceTest {
                         .establishment(excilys)
                         .location("Paris")
                         .type(ExperienceType.Work)
-                        .technologies(Lists.newArrayList(new Technology("Java"), new Technology("Spring"), new Technology("Hibernate"), new Technology("Javascript"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
                         .experienceTranslations(fr2)
                         .build(),
 
@@ -122,9 +123,8 @@ public class CvGeneratorServiceTest {
                         .establishment(unilim)
                         .location("Limoges")
                         .type(ExperienceType.University)
-                        .technologies(Lists.newArrayList(new Technology("UNITY"), new Technology("3D"), new Technology("Hibernate"), new Technology
-                                        ("WebGL"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
                         .experienceTranslations(fr)
                         .build(),
 
@@ -135,9 +135,8 @@ public class CvGeneratorServiceTest {
                         .location("Limoges")
                         .type(ExperienceType.University)
                         .experienceTranslations(fr)
-                        .technologies(Lists.newArrayList(new Technology("UNITY"), new Technology("3D"), new Technology("Hibernate"), new Technology
-                                        ("WebGL"),
-                                new Technology("IntelIJ")))
+                        .technologies(Lists.newArrayList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                                new Technology("IntelIJ","IDE")))
                         .build());
 
 
@@ -155,6 +154,8 @@ public class CvGeneratorServiceTest {
                 .phoneNumber("(+34) 7 78 98 54 21")
                 .experiences(experiences)
                 .status("Freelance")
+                .skillset(Arrays.asList(new Technology("Java","Langage"), new Technology("Spring","Frame"), new Technology("Hibernate","ORM"), new Technology("Javascript","Langage"),
+                        new Technology("IntelIJ","IDE")))
                 .shortPresentation("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
                         "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, " +
                         "consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. " +
@@ -164,20 +165,9 @@ public class CvGeneratorServiceTest {
                 .build();
     }
 
-    @Test
-    public void testCvGeneration() throws IOException {
-        when(personDao.get(lastname)).thenReturn(Optional.of(me));
-        cvGeneratorService.generate(fileURI,lastname,parameters);
-
-        Path filepath = Paths.get(fileURI);
-        Assert.assertTrue(Files.isRegularFile(filepath));
-        Assert.assertTrue(Files.isReadable(filepath));
-        //Files.delete(filepath);
-    }
-
     @Test(expected = PersonNotFoundException.class)
     public void testCvGenerationPersonNotFound() throws IOException {
-        when(personDao.get(lastname)).thenReturn(Optional.empty());
+        when(personRepository.get(lastname)).thenReturn(Optional.empty());
         cvGeneratorService.generate(fileURI,lastname,parameters);
     }
 
