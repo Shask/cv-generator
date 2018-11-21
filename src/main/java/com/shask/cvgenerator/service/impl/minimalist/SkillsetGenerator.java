@@ -35,7 +35,11 @@ public class SkillsetGenerator implements BlockElementGenerator {
                     .sorted(Comparator.reverseOrder())
                     .collect(Collectors.joining(", ")))));
 
-        skillByTypeMap.keySet().stream().map(key -> newCellWithTitle(key, skillByTypeMap.get(key))).forEach(table::addCell);
+        skillByTypeMap.entrySet()
+                .stream()
+                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .map(entry -> newCellWithTitle(entry.getKey(), entry.getValue()))
+                .forEach(table::addCell);
 
         return table;
     }

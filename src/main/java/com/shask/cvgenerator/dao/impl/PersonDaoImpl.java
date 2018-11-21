@@ -72,6 +72,7 @@ public class PersonDaoImpl implements PersonDao {
                 "   name" +
                 "   technologies {" +
                 "     name    " +
+                "     type    " +
                 "    } " +
                 "  establishment {" +
                 "  name" +

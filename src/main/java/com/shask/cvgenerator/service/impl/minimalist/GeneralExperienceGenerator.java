@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -78,7 +79,11 @@ class GeneralExperienceGenerator {
         t.addCell(newBasicCell("", padding));
         t.addCell(formatHtmlToCell(exp.getExperienceTranslation("FR").getLongDescription(), txtSize));
         t.addCell(newBasicCell("", padding));
-        t.addCell(newBasicCell(String.join(" - ", exp.getTechnologies().stream().map(Technology::toString).collect(Collectors.toList())), txtSize).setItalic());
+        t.addCell(newBasicCell(exp.getTechnologies().stream()
+                .sorted()
+                .map(Technology::toString)
+                .collect(Collectors.joining(" - ")), txtSize)
+                .setItalic());
         return t;
     }
 

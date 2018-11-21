@@ -1,10 +1,15 @@
 package com.shask.cvgenerator.model.person;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-public class Technology {
+@AllArgsConstructor
+@NoArgsConstructor
+public class Technology implements Comparable<Technology> {
 
     private String name;
     private String type;
@@ -16,19 +21,17 @@ public class Technology {
         this.name = name;
     }
 
-    public Technology() {
-    }
-
-    public Technology(final String name, final String type, final String url, final String version, final boolean advertised) {
-        this.name = name;
-        this.type = type;
-        this.url = url;
-        this.version = version;
-        this.advertised = advertised;
-    }
-
     @Override
     public String toString() {
         return name;
+    }
+
+    @Override
+    public int compareTo(Technology o) {
+        int res = this.type.compareTo(o.type);
+        if (res == 0) {
+            res = this.name.compareTo(o.name);
+        }
+        return res;
     }
 }
